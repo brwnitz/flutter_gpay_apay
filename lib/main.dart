@@ -46,15 +46,31 @@ class MainApp extends StatelessWidget {
                   style: ApplePayButtonStyle.black,
                   type: ApplePayButtonType.buy,
                   margin: const EdgeInsets.only(top: 15.0),
-                  onPaymentResult: onApplePayResult,
+                  onPaymentResult: (paymentResult) => onApplePayResult(context, paymentResult),
         ),
       ),
     )
     );
   }
 
-  void onApplePayResult(paymentResult) {
-  // Send the resulting Apple Pay token to your server / PSP
+  void onApplePayResult(BuildContext context, paymentResult) {
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Google Pay Result'),
+        content: Text('Payment Result: $paymentResult'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 void onGooglePayResult(BuildContext context, paymentResult) {
